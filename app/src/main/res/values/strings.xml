@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Movie Memoir</string>
+    <string-array name="state_array">
+        <item>ACT</item>
+        <item>NSW</item>
+        <item>NT</item>
+        <item>QLD</item>
+        <item>SA</item>
+        <item>TAS</item>
+        <item>VIC</item>
+        <item>WA</item>
+    </string-array>
+    >
+</resources>
