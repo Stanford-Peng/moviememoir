@@ -55,11 +55,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         frag = new HomeFragment();
         frag.setArguments(bundle);
         replaceFragment(frag);
-
-
-
-
-
     }
 
     @Override

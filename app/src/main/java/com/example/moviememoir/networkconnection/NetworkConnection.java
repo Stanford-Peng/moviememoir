@@ -36,7 +36,7 @@ public class NetworkConnection {
     //String[] details = {fName, lName, gdr, Dob, addr, sta, pcode, mail ,pword};
 
     public String addUser(String[] details){
-        Log.i("i: ","here");
+        //Log.i("i: ","here");
         Date curDate = new Date(System.currentTimeMillis());
 //        Date dob=null;
 //        Person person = null;
@@ -81,8 +81,8 @@ public class NetworkConnection {
         Gson gson = new Gson();
         try{
             Response response= client.newCall(request).execute();
-            results=response.body().string();
-            JSONArray ja = new JSONArray(results);
+            String resStr = response.body().string();
+            JSONArray ja = new JSONArray(resStr);
             if(ja.getJSONObject(0).getString("valid").equals("true")) {
                 results = ja.getJSONObject(0).getString("first name");
                 Log.i("valid", results);

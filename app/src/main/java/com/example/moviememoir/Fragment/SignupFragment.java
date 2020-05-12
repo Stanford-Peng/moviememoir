@@ -1,17 +1,11 @@
-package com.example.moviememoir;
+package com.example.moviememoir.Fragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.accounts.NetworkErrorException;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,16 +20,16 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.moviememoir.R;
 import com.example.moviememoir.networkconnection.NetworkConnection;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.security.MessageDigest;
 
-public class signup extends Fragment {
+public class SignupFragment extends Fragment {
 //    String firstName="";
 //    String lastName="";
 //    Character gender="";
@@ -50,7 +44,7 @@ public class signup extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.signup, container, false);
+        final View view = inflater.inflate(R.layout.signup_fragment, container, false);
         Button back = view.findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +57,7 @@ public class signup extends Fragment {
                 //fragmentManager.popBackStackImmediate();
 //                fragmentManager.popBackStack("login",FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.remove(fragmentManager.findFragmentByTag("signup"));
+//                fragmentTransaction.remove(fragmentManager.findFragmentByTag("signup_fragment"));
                 //fragmentTransaction.commit();
             }
         });
@@ -219,13 +213,13 @@ public class signup extends Fragment {
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.signup);
+//        setContentView(R.layout.signup_fragment);
 //
 //        Button back = findViewById(R.id.back);
 //        back.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent intent = new Intent(signup.this, MainActivity.class);
+//                Intent intent = new Intent(signup_fragment.this, MainActivity.class);
 //                startActivity(intent);
 //            }
 //        });
@@ -248,7 +242,7 @@ public class signup extends Fragment {
 //        dob.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                new DatePickerDialog(signup.this, dateListener, myCalendar
+//                new DatePickerDialog(signup_fragment.this, dateListener, myCalendar
 //                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
 //                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 //            }
@@ -263,7 +257,7 @@ public class signup extends Fragment {
 //        final EditText postcode = findViewById(R.id.postcode);
 //        final EditText email = findViewById(R.id.email);
 //        final EditText password = findViewById(R.id.password);
-//        Button register = findViewById(R.id.signup);
+//        Button register = findViewById(R.id.signup_fragment);
 //        networkConnection = new NetworkConnection();
 //        register.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -283,7 +277,7 @@ public class signup extends Fragment {
 //                    AddCredentialsTask addCredentialsTask = new AddCredentialsTask();
 //                    addCredentialsTask.execute(details);
 //                } else {
-//                    Toast.makeText(signup.this, "Please fill up the form first.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(signup_fragment.this, "Please fill up the form first.", Toast.LENGTH_SHORT).show();
 //                }
 //
 //            }
