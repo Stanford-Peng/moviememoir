@@ -1,5 +1,6 @@
 package com.example.moviememoir;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
     NetworkConnection networkConnection=null;
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username=uname.getText().toString();
+                username=uname.getText().toString();
                 String password = getMd5(pwd.getText().toString());
                 Log.i("profile",username+" "+password);
                 Login login = new Login();
@@ -49,16 +51,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     private class Login extends AsyncTask<String, Void, String>{
 
         @Override
         protected String doInBackground(String... strings) {
-            String message="";
-            if(networkConnection.login(strings[0],strings[1])){
+            String message="Failed Login";
+            String firstName = networkConnection.login(strings[0],strings[1]);
+            if(!firstName.equals("")){
                 message="Welcome";
-                //to do
-            }else{
-                message="Failed";
+                //to enter home page
+                Intent intent= new Intent(MainActivity.this,HomeActivity.class);
+                intent.putExtra("user",username);
+                intent.putExtra("firstName",firstName);
+                startActivity(intent);
+                finish();
+
             }
             return message;
         }

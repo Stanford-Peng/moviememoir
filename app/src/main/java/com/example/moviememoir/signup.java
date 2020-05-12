@@ -119,11 +119,11 @@ public class signup extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            String message = "You have registered successfully";
+            String message = "Register Failed, Email has been registered";
             String res = networkConnection.addUser(strings);
             Log.i("Register: ",res);
             if(!res.isEmpty()){
-                message="Register Failed, Email has been registered";
+                message= "You have registered successfully";
             }
             return message;
         }

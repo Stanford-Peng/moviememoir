@@ -7,6 +7,9 @@ import com.example.moviememoir.entity.Credentials;
 import com.example.moviememoir.entity.Person;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
 
 import java.util.Date;
 //import java.text.SimpleDateFormat;
@@ -25,7 +28,7 @@ import okhttp3.Response;
 public class NetworkConnection {
     private static final String BASE_URL = "http://192.168.0.5:8080/MovieMemoir_2/webresources/";
     private OkHttpClient client = null;
-    private String results;
+    //private String results;
 
     public NetworkConnection() {
         client = new OkHttpClient();
@@ -68,26 +71,32 @@ public class NetworkConnection {
         return strResponse;
     }
 
-    public boolean login(String uname, String pwd){
+    public String login(String uname, String pwd){
+        String results = "";
         final String methodPath = "moviememoir.credentials/login/"+uname+"/"+pwd;
         Request.Builder builder = new Request.Builder();
-        boolean valid=false;
+        //boolean valid=false;
         builder.url(BASE_URL+methodPath);
         Request request = builder.build();
+        Gson gson = new Gson();
         try{
             Response response= client.newCall(request).execute();
             results=response.body().string();
-            Log.i("valid",results);
+            JSONArray ja = new JSONArray(results);
+            if(ja.getJSONObject(0).getString("valid").equals("true")) {
+                results = ja.getJSONObject(0).getString("first name");
+                Log.i("valid", results);
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
 
-        if (results.equals("true")){
-            valid = true;
-        }
-        Log.i("logic",Boolean.toString(valid));
+//        if (results.equals("true")){
+//            valid = true;
+//        }
+        Log.i("logic",results);
 
-        return valid;
+        return results;
     }
 
 }
