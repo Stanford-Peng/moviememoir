@@ -11,8 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -35,6 +38,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = getIntent();
         username = intent.getStringExtra("user");
         String firstName = intent.getStringExtra("firstName");
+        String pid = intent.getStringExtra("pid");
+        Log.i("Home",pid);
+        SharedPreferences shared = HomeActivity.this.getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        SharedPreferences.Editor spEditor = shared.edit();
+        spEditor.putString("username",username);
+        spEditor.putString("pid",pid);
+        spEditor.apply();
         //TextView tv = findViewById(R.id.userName);
         //tv.setText(firstName);
 

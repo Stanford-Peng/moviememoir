@@ -51,11 +51,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 username=uname.getText().toString().trim();
-                String password = getMd5(pwd.getText().toString().trim());
+                String password = pwd.getText().toString().trim();
                 Log.i("profile",username+" "+password);
                 if(!(password.isEmpty() || username.isEmpty())) {
                     Login login = new Login();
-                    login.execute(username, password);
+                    login.execute(username, getMd5(password));
                 }else{
                     Toast.makeText(getActivity(), "No blank input", Toast.LENGTH_SHORT).show();
                 }
@@ -72,13 +72,14 @@ public class LoginFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             String message="Failed Login";
-            String firstName = networkConnection.login(strings[0],strings[1]);
-            if(!firstName.equals("")){
+            String[] cred = networkConnection.login(strings[0],strings[1]);
+            if(!cred[0].isEmpty()){
                 message="Welcome";
                 //to enter home page
                 Intent intent= new Intent(getActivity(), HomeActivity.class);
                 intent.putExtra("user",username);
-                intent.putExtra("firstName",firstName);
+                intent.putExtra("firstName",cred[0]);
+                intent.putExtra("pid",cred[1]);
                 startActivity(intent);
                 getActivity().finish();
             }

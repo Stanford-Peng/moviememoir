@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Date;
 //import java.text.SimpleDateFormat;
@@ -28,6 +29,8 @@ import okhttp3.Response;
 public class NetworkConnection {
     private static final String BASE_URL = "http://192.168.0.5:8080/MovieMemoir_2/webresources/";
     private OkHttpClient client = null;
+    private static final String API_KEY = "AIzaSyDKQbMuKHqeNK6-ZbpmNh8ARp9KNpZ7Uec";
+    private static final String SEARCH_ID_cx = "012837362384735422434:vfrbrinp1ir";
     //private String results;
 
     public NetworkConnection() {
@@ -71,21 +74,30 @@ public class NetworkConnection {
         return strResponse;
     }
 
-    public String login(String uname, String pwd){
-        String results = "";
+    public String[] login(String uname, String pwd){
+        String[] results = {"",""};
         final String methodPath = "moviememoir.credentials/login/"+uname+"/"+pwd;
         Request.Builder builder = new Request.Builder();
         //boolean valid=false;
         builder.url(BASE_URL+methodPath);
         Request request = builder.build();
-        Gson gson = new Gson();
+        //Gson gson = new Gson();
         try{
             Response response= client.newCall(request).execute();
             String resStr = response.body().string();
+            Log.i("logic",resStr);
             JSONArray ja = new JSONArray(resStr);
-            if(ja.getJSONObject(0).getString("valid").equals("true")) {
-                results = ja.getJSONObject(0).getString("first name");
-                Log.i("valid", results);
+            try{
+
+            if(ja.getJSONObject(0).getString("valid").equals("true"))
+            {
+                results[0] = ja.getJSONObject(0).getString("first name");
+                results[1]= ja.getJSONObject(0).getString("pid");
+                Log.i("valid", results[0]);
+            }
+            }
+            catch(Exception e){
+                e.printStackTrace();
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -94,9 +106,47 @@ public class NetworkConnection {
 //        if (results.equals("true")){
 //            valid = true;
 //        }
-        Log.i("logic",results);
+
 
         return results;
+    }
+
+    public JSONArray getTopMovies(String pid){
+        JSONArray ja=null;
+        final String methodPath = "moviememoir.memoir/findRecentTopScoredMovies/"+pid;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL+methodPath);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            String resStr = response.body().string();
+            ja = new JSONArray(resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        Log.i("url",methodPath);
+        return ja;
+    }
+
+    public JSONObject searchMovie(String movie){
+        JSONObject jo = null;
+        movie = movie.replace(" ", "+");
+        Request.Builder builder = new Request.Builder();
+        builder.url("https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
+                SEARCH_ID_cx + "&q=" + movie);
+//        Log.i("url", "https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
+//                SEARCH_ID_cx + "&q=" + movie);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            String resStr = response.body().string();
+            jo = new JSONObject(resStr);
+            Log.i("Search Response: ", resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return jo;
     }
 
 }
