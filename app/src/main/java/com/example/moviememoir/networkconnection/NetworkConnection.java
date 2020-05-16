@@ -1,6 +1,7 @@
 package com.example.moviememoir.networkconnection;
 
 
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.moviememoir.entity.Credentials;
@@ -12,6 +13,10 @@ import com.google.gson.JsonArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.util.Date;
 //import java.text.SimpleDateFormat;
 //import java.sql.Date;
@@ -27,7 +32,7 @@ import okhttp3.Response;
 
 
 public class NetworkConnection {
-    private static final String BASE_URL = "http://192.168.0.5:8080/MovieMemoir_2/webresources/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/MovieMemoir_2/webresources/";
     private OkHttpClient client = null;
     private static final String API_KEY = "AIzaSyDKQbMuKHqeNK6-ZbpmNh8ARp9KNpZ7Uec";
     private static final String SEARCH_ID_cx = "012837362384735422434:vfrbrinp1ir";
@@ -128,25 +133,45 @@ public class NetworkConnection {
         return ja;
     }
 
-    public JSONObject searchMovie(String movie){
-        JSONObject jo = null;
+    public String searchMovie(String movie){
+        String resStr = null;
         movie = movie.replace(" ", "+");
         Request.Builder builder = new Request.Builder();
         builder.url("https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
-                SEARCH_ID_cx + "&q=" + movie);
+                SEARCH_ID_cx + "&q=movie+" + movie +"&num=3");
 //        Log.i("url", "https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
-//                SEARCH_ID_cx + "&q=" + movie);
+//                SEARCH_ID_cx + "&q=" + movie +"&num=3");
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
-            String resStr = response.body().string();
-            jo = new JSONObject(resStr);
+            resStr = response.body().string();
+            //jo = new JSONObject(resStr);
             Log.i("Search Response: ", resStr);
+            //writeFile("search.txt",resStr);
         }catch(Exception e){
             e.printStackTrace();
         }
 
-        return jo;
+        return resStr;
+    }
+
+    public static void writeFile(String filepath, String content)
+    {
+        //FileWriter fw = null;
+        try
+        {
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+            File file = new File(path, "/" + filepath);
+            FileWriter fw = new FileWriter(file);
+            fw.write(content);
+            fw.close();
+
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+        }
+
     }
 
 }
