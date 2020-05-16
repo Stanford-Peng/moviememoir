@@ -138,7 +138,7 @@ public class NetworkConnection {
         movie = movie.replace(" ", "+");
         Request.Builder builder = new Request.Builder();
         builder.url("https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
-                SEARCH_ID_cx + "&q=movie+" + movie +"&num=3");
+                SEARCH_ID_cx + "&q=movie+" + movie);
 //        Log.i("url", "https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
 //                SEARCH_ID_cx + "&q=" + movie +"&num=3");
         Request request = builder.build();

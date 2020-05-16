@@ -1,5 +1,6 @@
 package com.example.moviememoir.Fragment;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,26 +21,34 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 
 import com.example.moviememoir.R;
+import com.example.moviememoir.adaptor.SearchRecycleAdaptor;
+import com.example.moviememoir.model.SearchedMovie;
 import com.example.moviememoir.networkconnection.NetworkConnection;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SearchFragment extends Fragment {
     NetworkConnection networkConnection = null;
-    String[] images = new String[3];
-    String[] links = new String[3];
+    //String[] images = new String[3];
+    List<String> links = new ArrayList<String>();
+    private RecyclerView recyclerView;
+    private LayoutManager layoutManager;
     public SearchFragment() {
     }
 
@@ -62,74 +72,54 @@ public class SearchFragment extends Fragment {
                 else{
                     Toast.makeText(getActivity(), "Please input a movie first", Toast.LENGTH_SHORT).show();
                 }
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
             }
         });
 
         return view;
     }
 
-    private class SearchTask extends AsyncTask<String, Void, HashMap<String[],Bitmap[]>>
+    private class SearchTask extends AsyncTask<String, Void, ArrayList<SearchedMovie>>
     {
 
         @Override
-        protected HashMap<String[],Bitmap[]> doInBackground(String... strings) {
+        protected ArrayList<SearchedMovie> doInBackground(String... strings) {
             //Log.i("strings",strings[0]);
-            HashMap<String[],Bitmap[]> result = new HashMap();
+            ArrayList<SearchedMovie> results = new ArrayList<SearchedMovie>();
             JsonElement jsonElement = new JsonParser().parse(networkConnection.searchMovie(strings[0]));
             JsonObject jobject = jsonElement.getAsJsonObject();
             JsonArray items = jobject.getAsJsonArray("items");
-            String[] movies = new String[3];
-            Bitmap[] bmps = new Bitmap[3];
             for (int i = 0; i < items.size();i++)
             {
-                movies[i]=items.get(i).getAsJsonObject().getAsJsonPrimitive("title").getAsString();
-                images[i] = items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("cse_thumbnail").get(0).getAsJsonObject().getAsJsonPrimitive("src").getAsString();
-                links[i] = items.get(i).getAsJsonObject().getAsJsonPrimitive("formattedUrl").getAsString();
-            }
-            Log.i("search", movies[0]);
-            Log.i("image", images[0]);
-            Log.i("link", links[0]);
-
-            for (int i=0; i<images.length;i++) {
+                String movie =items.get(i).getAsJsonObject().getAsJsonPrimitive("title").getAsString();
+                String image = items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("cse_thumbnail").get(0).getAsJsonObject().getAsJsonPrimitive("src").getAsString();
+                String link =items.get(i).getAsJsonObject().getAsJsonPrimitive("formattedUrl").getAsString();
                 URL url = null;
                 try {
-                    url = new URL(images[i]);
+                    url = new URL(image);
                     Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    bmps[i] = bmp;
-//                    imageViews[i].setImageBitmap(bmp);
+                    SearchedMovie searchedMovie = new SearchedMovie(movie,bmp,link);
+                    results.add(searchedMovie);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
             }
-            result.put(movies,bmps);
-
-
-            return result;
+            //Log.i("link", links.get(0));
+            return results;
         }
 
         @Override
-        protected void onPostExecute(HashMap<String[],Bitmap[]> hm) {
-            String[] movies = hm.keySet().iterator().next();
-            Bitmap[] bmps = hm.values().iterator().next();
+        protected void onPostExecute(ArrayList<SearchedMovie> al) {
 
-            TextView movie1 = getView().findViewById(R.id.movie1);
-            TextView movie2 = getView().findViewById(R.id.movie2);
-            TextView movie3 = getView().findViewById(R.id.movie3);
-            TextView[] textViews = new TextView[]{movie1,movie2,movie3};
-
-            ImageView image1 = getView().findViewById(R.id.image1);
-            ImageView image2 = getView().findViewById(R.id.image2);
-            ImageView image3 = getView().findViewById(R.id.image3);
-            ImageView[] imageViews = new ImageView[]{image1,image2,image3};
-            for(int i=0; i<movies.length;i++)
-            {
-                textViews[i].setText(movies[i]);
-            }
-            for (int i=0; i<bmps.length;i++){
-                imageViews[i].setImageBitmap(bmps[i]);
-
-            }
-
+            recyclerView = getView().findViewById(R.id.recyclerView);
+            SearchRecycleAdaptor adaptor = new SearchRecycleAdaptor(al, getContext());
+            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+            recyclerView.setAdapter(adaptor);
+            layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
 
 
         }
@@ -137,6 +127,43 @@ public class SearchFragment extends Fragment {
 
 }
 
+//            String[] movies = new String[3];
+//            Bitmap[] bmps = new Bitmap[3];
+//            Log.i("search", movies[0]);
+//            Log.i("image", images[0]);
+//                    bmps[i] = bmp;
+//                    imageViews[i].setImageBitmap(bmp);
+//            String[] movies = hm.keySet().iterator().next();
+//            Bitmap[] bmps = hm.values().iterator().next();
+
+//            TextView movie1 = getView().findViewById(R.id.movie1);
+//            TextView movie2 = getView().findViewById(R.id.movie2);
+//            TextView movie3 = getView().findViewById(R.id.movie3);
+//            TextView[] textViews = new TextView[]{movie1,movie2,movie3};
+
+//            ImageView image1 = getView().findViewById(R.id.image1);
+//            ImageView image2 = getView().findViewById(R.id.image2);
+//            ImageView image3 = getView().findViewById(R.id.image3);
+//            ImageView[] imageViews = new ImageView[]{image1,image2,image3};
+//            for(int i=0; i<movies.length;i++)
+//            {
+//                textViews[i].setText(movies[i]);
+//            }
+//            for (int i=0; i<bmps.length;i++){
+//                imageViews[i].setImageBitmap(bmps[i]);
+//
+//            }
+//            for (int i=0; i<images.length;i++) {
+//                URL url = null;
+//                try {
+//                    url = new URL(images[i]);
+//                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                    bmps[i] = bmp;
+////                    imageViews[i].setImageBitmap(bmp);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
 //            movie1.setText(movies[0]);
 //            movie2.setText(movies[1]);

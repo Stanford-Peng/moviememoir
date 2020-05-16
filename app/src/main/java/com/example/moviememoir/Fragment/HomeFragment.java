@@ -45,9 +45,9 @@ public class HomeFragment extends Fragment {
         forDate.setText(date);
 
         networkConnection = new NetworkConnection();
-        GetTopMovies getTopMovies = new GetTopMovies();
         SharedPreferences shared = getActivity().getSharedPreferences("credentials", Context.MODE_PRIVATE);
         String pid = shared.getString("pid",null);
+        GetTopMovies getTopMovies = new GetTopMovies();
         getTopMovies.execute(pid);
         return view;
     }
