@@ -62,20 +62,26 @@ public class SearchRecycleAdaptor extends RecyclerView.Adapter<SearchRecycleAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final SearchedMovie searchedMovie = searchedMovies.get(position);
-        TextView movie = holder.movie;
-        movie.setText(searchedMovie.getMovie());
-        movie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();;
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment MovieView = new MovieView(searchedMovie.getLink());
-                fragmentTransaction.replace(R.id.content_frame, MovieView);
-                fragmentTransaction.commit();
-            }
-        });
-        ImageView image = holder.image;
-        image.setImageBitmap(searchedMovie.getImage());
+        if (searchedMovie.getLink().startsWith("tt")) {
+            TextView movie = holder.movie;
+            movie.setText(searchedMovie.getMovie());
+            ImageView image = holder.image;
+            image.setImageBitmap(searchedMovie.getImage());
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                    ;
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    Fragment MovieView = new MovieView(searchedMovie.getLink());
+                    fragmentTransaction.replace(R.id.content_frame, MovieView);
+                    fragmentTransaction.commit();
+                }
+            };
+            movie.setOnClickListener(listener);
+            image.setOnClickListener(listener);
+        }
+
 
     }
 

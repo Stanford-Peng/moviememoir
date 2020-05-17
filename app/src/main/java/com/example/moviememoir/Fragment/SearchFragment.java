@@ -94,7 +94,7 @@ public class SearchFragment extends Fragment {
             {
                 String movie =items.get(i).getAsJsonObject().getAsJsonPrimitive("title").getAsString();
                 String image = items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("cse_thumbnail").get(0).getAsJsonObject().getAsJsonPrimitive("src").getAsString();
-                String link =items.get(i).getAsJsonObject().getAsJsonPrimitive("formattedUrl").getAsString();
+                String link =items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("metatags").get(0).getAsJsonObject().getAsJsonPrimitive("pageid").getAsString();
                 URL url = null;
                 try {
                     url = new URL(image);

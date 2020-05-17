@@ -36,6 +36,7 @@ public class NetworkConnection {
     private OkHttpClient client = null;
     private static final String API_KEY = "AIzaSyDKQbMuKHqeNK6-ZbpmNh8ARp9KNpZ7Uec";
     private static final String SEARCH_ID_cx = "012837362384735422434:vfrbrinp1ir";
+    private static final String MDB_KEY = "fc4e821eb5f2109cd2d6e5e662acb7da";
     //private String results;
 
     public NetworkConnection() {
@@ -155,23 +156,44 @@ public class NetworkConnection {
         return resStr;
     }
 
-    public static void writeFile(String filepath, String content)
-    {
-        //FileWriter fw = null;
-        try
-        {
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-            File file = new File(path, "/" + filepath);
-            FileWriter fw = new FileWriter(file);
-            fw.write(content);
-            fw.close();
+    public String moreMovie(String link, String param){
+        String resStr = null;
+        Request.Builder builder = new Request.Builder();
+        builder.url("https://api.themoviedb.org/3/movie/" + link + param +"?api_key=" + MDB_KEY + "&external_source=imdb_id");
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+            //jo = new JSONObject(resStr);
+            Log.i("Search Response: ", resStr);
+            //writeFile("search.txt",resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.toString());
-        }
+        return resStr;
 
     }
+
+//    public String getCast(String link){
+//        String resStr = null;
+//        Request.Builder builder = new Request.Builder();
+//        builder.url("https://api.themoviedb.org/3/movie/" + link + "/credits" +"?api_key=" + MDB_KEY + "&external_source=imdb_id");
+//                Request request = builder.build();
+//        try {
+//            Response response = client.newCall(request).execute();
+//            resStr = response.body().string();
+//            //jo = new JSONObject(resStr);
+//            Log.i("Search Response: ", resStr);
+//            //writeFile("search.txt",resStr);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        return resStr;
+//
+//    }
+
+
 
 }
