@@ -76,6 +76,8 @@ public class SearchFragment extends Fragment {
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
             }
         });
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
         return view;
     }
@@ -114,9 +116,9 @@ public class SearchFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<SearchedMovie> al) {
 
-            recyclerView = getView().findViewById(R.id.recyclerView);
+           // recyclerView = getView().findViewById(R.id.recyclerView);
             SearchRecycleAdaptor adaptor = new SearchRecycleAdaptor(al, getContext());
-            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+            //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
             recyclerView.setAdapter(adaptor);
             layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);

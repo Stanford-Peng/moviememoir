@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.moviememoir.Fragment.HomeFragment;
 import com.example.moviememoir.Fragment.MovieMemoir;
 import com.example.moviememoir.Fragment.SearchFragment;
+import com.example.moviememoir.Fragment.WatchListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,6 +88,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.movieMemoir:
                 replaceFragment(new MovieMemoir());
+                break;
+            case R.id.watchlist:
+                replaceFragment(new WatchListFragment());
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

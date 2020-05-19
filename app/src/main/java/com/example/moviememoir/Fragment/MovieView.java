@@ -1,5 +1,7 @@
 package com.example.moviememoir.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,24 +12,31 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviememoir.R;
+import com.example.moviememoir.entity.Movie;
 import com.example.moviememoir.networkconnection.NetworkConnection;
+import com.example.moviememoir.viewmodel.MovieViewModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MovieView extends Fragment {
     private String link;
     private NetworkConnection networkConnection = null;
+    private MovieViewModel movieViewModel;
     public MovieView(String link) {
         this.link=link;
     }
@@ -43,15 +52,42 @@ public class MovieView extends Fragment {
         networkConnection = new NetworkConnection();
         GetDetails getDetails = new GetDetails();
         getDetails.execute(link);
+        final TextView name = view.findViewById(R.id.name);
+        final TextView date = view.findViewById(R.id.date);
+        TextView genre = view.findViewById(R.id.genre);
+        TextView plot = view.findViewById(R.id.plot);
+        ImageView image = view.findViewById(R.id.image);
+        TextView countries = view.findViewById(R.id.country);
+        TextView director = view.findViewById(R.id.director);
+        TextView actors = view.findViewById(R.id.cast);
+        RatingBar rating = view.findViewById(R.id.simpleRatingBar);
 
         Button addWatch = view.findViewById(R.id.addList);
         Button addMemoir = view.findViewById(R.id.addMemoir);
+        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+        movieViewModel.initializeVars(getActivity().getApplication());
+//        final TextView test = view.findViewById(R.id.test);
+        SharedPreferences shared = getActivity().getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        final String username = shared.getString("username", null);
         addWatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
+                String col1 = name.getText().toString();
+                String col2 = date.getText().toString();
+                if(movieViewModel.findByNameReleaseDateUser(col1,col2,username) == null){
+                Date curDate = new Date(System.currentTimeMillis());
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date = formatter.format(curDate);
+                Movie movie = new Movie(link,col1,col2,date,username);
+                movieViewModel.insert(movie);
+                Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getActivity(), "It has been added before", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+        //to do
         addMemoir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

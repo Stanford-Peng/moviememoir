@@ -18,7 +18,8 @@
         <activity
             android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Fragment.SignupFragment" />
+        <activity android:name=".Fragment.SignupFragment"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
