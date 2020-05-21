@@ -4,6 +4,7 @@ package com.example.moviememoir.networkconnection;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.moviememoir.entity.Cinema;
 import com.example.moviememoir.entity.Credentials;
 import com.example.moviememoir.entity.Person;
 import com.google.gson.Gson;
@@ -37,6 +38,7 @@ public class NetworkConnection {
     private static final String API_KEY = "AIzaSyDKQbMuKHqeNK6-ZbpmNh8ARp9KNpZ7Uec";
     private static final String SEARCH_ID_cx = "012837362384735422434:vfrbrinp1ir";
     private static final String MDB_KEY = "fc4e821eb5f2109cd2d6e5e662acb7da";
+    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     //private String results;
 
     public NetworkConnection() {
@@ -62,7 +64,7 @@ public class NetworkConnection {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").create();
             String credentailsJson = gson.toJson(credentials);
 
-            RequestBody body = RequestBody.create(credentailsJson, MediaType.get("application/json; charset=utf-8"));
+            RequestBody body = RequestBody.create(credentailsJson, JSON);
             Request request = new Request.Builder()
                     .url(BASE_URL + methodPath).post(body)
                     .build();
@@ -186,6 +188,28 @@ public class NetworkConnection {
             resStr = response.body().string();
             Log.i("Cinema Response: ", resStr);
         }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return resStr;
+
+    }
+
+    public String addCinema(String cName, String cPostcode){
+        String resStr = null;
+        Request.Builder builder = new Request.Builder();
+        final String path = "moviememoir.cinema";
+        //builder.url( BASE_URL + path);
+        Cinema cinema = new Cinema(cName,cPostcode);
+        Gson gson = new GsonBuilder().create();
+        String cinemaJson = gson.toJson(cinema);
+        Log.i("Cinema:",cinemaJson);
+        RequestBody body = RequestBody.create(cinemaJson, JSON);
+        Request request = builder.url(BASE_URL + path).post(body).build();
+        try{
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+        } catch(Exception e){
             e.printStackTrace();
         }
 

@@ -2,9 +2,11 @@ package com.example.moviememoir.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.moviememoir.R;
@@ -31,11 +35,13 @@ import com.google.gson.JsonParser;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 public class AddMemoir extends Fragment {
     private Bitmap mImage;
     private String mName;
     private String mDate;
+
     NetworkConnection networkConnection=null;
 
     public AddMemoir() {
@@ -106,6 +112,57 @@ public class AddMemoir extends Fragment {
         getCinemas.execute();
 
         Button addCinema = view.findViewById(R.id.addCinema);
+        addCinema.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater li = LayoutInflater.from(getActivity());
+                final View promptsView = li.inflate(R.layout.add_cinema,null);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getActivity());
+                alertDialogBuilder.setView(promptsView);
+
+//                final EditText userInput = (EditText) promptsView
+//                        .findViewById(R.id.editTextDialogUserInput);
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+//                                        result.setText(userInput.getText());
+                                        EditText cName = promptsView.findViewById(R.id.cName);
+                                        EditText cPostcode = promptsView.findViewById(R.id.cPostcode);
+                                        String cinemaName = cName.getText().toString().trim();
+                                        String cinemaPostcode = cPostcode.getText().toString().trim();
+                                        //Pattern pattern = Pattern.compile("\d\d\d\d");
+                                        Log.i("cName",cinemaName);
+                                        if(cinemaName.isEmpty()||cinemaPostcode.length()!=4||!cinemaPostcode.matches("\\d\\d\\d\\d")){
+                                            Toast.makeText(getActivity(), "Please Enter Valid Cinema", Toast.LENGTH_SHORT).show();
+
+                                        } else{
+                                            AddCinema addCinema = new AddCinema();
+                                            addCinema.execute(cinemaName,cinemaPostcode);
+
+                                        }
+
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
+
+            }
+        });
 
 
 
@@ -142,6 +199,28 @@ public class AddMemoir extends Fragment {
 
         }
     }
+
+    private class AddCinema extends AsyncTask<String, Void,String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            String res = networkConnection.addCinema(strings[0],strings[1]);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            if(res.isEmpty()){
+                Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
+                GetCinemas getCinemas = new GetCinemas();
+                getCinemas.execute();
+            }else{
+                Toast.makeText(getActivity(), "Failed, Sorry.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+
 
 
 }
