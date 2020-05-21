@@ -89,26 +89,36 @@ public class SearchFragment extends Fragment {
         protected ArrayList<SearchedMovie> doInBackground(String... strings) {
             //Log.i("strings",strings[0]);
             ArrayList<SearchedMovie> results = new ArrayList<SearchedMovie>();
-            JsonElement jsonElement = new JsonParser().parse(networkConnection.searchMovie(strings[0]));
+            String res = networkConnection.searchMovie(strings[0]);
+            if (!(res.contains("\"status_code\": 34") ||res.isEmpty()||res==null) ){
+                JsonElement jsonElement = new JsonParser().parse(res);
             JsonObject jobject = jsonElement.getAsJsonObject();
             JsonArray items = jobject.getAsJsonArray("items");
-            for (int i = 0; i < items.size();i++)
-            {
-                String movie =items.get(i).getAsJsonObject().getAsJsonPrimitive("title").getAsString();
-                String image = items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("cse_thumbnail").get(0).getAsJsonObject().getAsJsonPrimitive("src").getAsString();
-                String link =items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("metatags").get(0).getAsJsonObject().getAsJsonPrimitive("pageid").getAsString();
+            for (int i = 0; i < items.size(); i++) {
+                JsonElement e0= items.get(i).getAsJsonObject().getAsJsonPrimitive("title");
+                JsonElement e1 = items.get(i).getAsJsonObject().getAsJsonObject("pagemap");
+                JsonArray e2 = items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("cse_thumbnail");
+                JsonArray e3 = items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("metatags");
+                JsonElement e4 = items.get(i).getAsJsonObject().getAsJsonObject("pagemap").getAsJsonArray("metatags").get(0).getAsJsonObject().getAsJsonPrimitive("pageid");
+                if(!(e0==null||e1==null||e2==null||e3==null||e4==null)) {
+                    String movie = e0.getAsString();
+                    String image = e2.get(0).getAsJsonObject().getAsJsonPrimitive("src").getAsString();
+                    String link = e4.getAsString();
+
                 URL url = null;
                 try {
                     url = new URL(image);
                     Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    SearchedMovie searchedMovie = new SearchedMovie(movie,bmp,link);
+                    SearchedMovie searchedMovie = new SearchedMovie(movie, bmp, link);
                     results.add(searchedMovie);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                }
 
 
             }
+        }
             //Log.i("link", links.get(0));
             return results;
         }

@@ -165,8 +165,26 @@ public class NetworkConnection {
             Response response = client.newCall(request).execute();
             resStr = response.body().string();
             //jo = new JSONObject(resStr);
-            Log.i("Search Response: ", resStr);
+            //Log.i("Search Response: ", resStr);
             //writeFile("search.txt",resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return resStr;
+
+    }
+
+    public String getCinema(){
+        String resStr = null;
+        Request.Builder builder = new Request.Builder();
+        final String path = "moviememoir.cinema";
+        builder.url( BASE_URL + path);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+            Log.i("Cinema Response: ", resStr);
         }catch(Exception e){
             e.printStackTrace();
         }

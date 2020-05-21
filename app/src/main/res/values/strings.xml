@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Movie Memoir</string>
+    <string name="app_name">My Movie Memoir</string>
     <string-array name="state_array">
         <item>ACT</item>
         <item>NSW</item>

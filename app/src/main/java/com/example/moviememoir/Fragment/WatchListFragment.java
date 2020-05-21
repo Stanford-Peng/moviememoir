@@ -1,7 +1,9 @@
 package com.example.moviememoir.Fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +18,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,39 +81,6 @@ public class WatchListFragment extends Fragment {
 
         });
 
-//myListAdapter.getView();
-
-//watchList.
-//        watchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                final Adapter adp = parent.getAdapter();
-//                ImageView delete = view.findViewById(R.id.iv_item_delete);
-//                TextView name = view.findViewById(R.id.mName);
-//                TextView date = view.findViewById(R.id.mReleaseDate);
-                //delete.setOnClickListener();
-//            ImageView imageView = convertView.findViewById(R.id.iv_item_delete);
-//            TextView name = convertView.findViewById(R.id.mName);
-//            TextView date = convertView.findViewById(R.id.mReleaseDate);
-//            final String mName = name.getText().toString();
-//            final String mDate = date.getText().toString();
-//            Log.i("mName",mName);
-//            delete.setOnClickListener(
-//                    new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            movieViewModel.deleteByNameDate(mName,mDate);
-//                            adp.notifyDataSetChanged();
-//                        }
-//                    }
-//            );
-//           }
-//        });
-
-
-
-
-
 
         return view;
 
@@ -142,11 +115,48 @@ public class WatchListFragment extends Fragment {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            movieViewModel.deleteByNameDateUser(mName,mDate,username);
-                            notifyDataSetChanged();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Alert: ");
+                            builder.setMessage("Are you sure that you want to delete "+mName);
+                            builder.setCancelable(true);
+                            builder.setPositiveButton(
+                                    "Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            movieViewModel.deleteByNameDateUser(mName,mDate,username);
+                                            notifyDataSetChanged();
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            builder.setNegativeButton(
+                                    "No",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            AlertDialog alert = builder.create();
+                            alert.show();
                         }
                     }
             );
+
+            name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Movie selected = movieViewModel.findByNameReleaseDateUser(mName,mDate,username);
+                    String link = selected.getLink();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    Fragment MovieView = new MovieView(link,false);
+                    fragmentTransaction.replace(R.id.content_frame, MovieView);
+                    fragmentTransaction.commit();
+                }
+            });
+
+            name.setPaintFlags(name.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             return convertView;
         }
@@ -161,3 +171,31 @@ public class WatchListFragment extends Fragment {
 
 }
 
+//myListAdapter.getView();
+
+//watchList.
+//        watchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                final Adapter adp = parent.getAdapter();
+//                ImageView delete = view.findViewById(R.id.iv_item_delete);
+//                TextView name = view.findViewById(R.id.mName);
+//                TextView date = view.findViewById(R.id.mReleaseDate);
+//delete.setOnClickListener();
+//            ImageView imageView = convertView.findViewById(R.id.iv_item_delete);
+//            TextView name = convertView.findViewById(R.id.mName);
+//            TextView date = convertView.findViewById(R.id.mReleaseDate);
+//            final String mName = name.getText().toString();
+//            final String mDate = date.getText().toString();
+//            Log.i("mName",mName);
+//            delete.setOnClickListener(
+//                    new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            movieViewModel.deleteByNameDate(mName,mDate);
+//                            adp.notifyDataSetChanged();
+//                        }
+//                    }
+//            );
+//           }
+//        });

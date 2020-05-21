@@ -3,12 +3,18 @@ package com.example.moviememoir.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +53,21 @@ public class LoginFragment extends Fragment {
         Button signin = view.findViewById(R.id.loginBtn);
         final EditText uname = view.findViewById(R.id.editText1);
         final EditText pwd = view.findViewById(R.id.editText2);
+        CheckBox checkBox = view.findViewById(R.id.maskPwd);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        // show password
+                        pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    } else {
+                        // hide password
+                        pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    }
+                }
+            }
+        );
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +83,8 @@ public class LoginFragment extends Fragment {
 
             }
         });
+
+
         return view;
     }
 

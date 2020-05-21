@@ -2,6 +2,8 @@ package com.example.moviememoir.Fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +18,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviememoir.R;
@@ -37,13 +42,20 @@ public class MovieView extends Fragment {
     private String link;
     private NetworkConnection networkConnection = null;
     private MovieViewModel movieViewModel;
+    private Boolean addWatchButton;
     public MovieView(String link) {
         this.link=link;
+        this.addWatchButton=true;
+    }
+
+    public MovieView(String link, Boolean addWatchButton) {
+        this.link=link;
+        this.addWatchButton = addWatchButton;
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_view_fragment, container, false);
 //        TextView linkView = view.findViewById(R.id.link);
 //        linkView.setText(link);
@@ -54,43 +66,59 @@ public class MovieView extends Fragment {
         getDetails.execute(link);
         final TextView name = view.findViewById(R.id.name);
         final TextView date = view.findViewById(R.id.date);
-        TextView genre = view.findViewById(R.id.genre);
-        TextView plot = view.findViewById(R.id.plot);
-        ImageView image = view.findViewById(R.id.image);
-        TextView countries = view.findViewById(R.id.country);
-        TextView director = view.findViewById(R.id.director);
-        TextView actors = view.findViewById(R.id.cast);
-        RatingBar rating = view.findViewById(R.id.simpleRatingBar);
+//        TextView genre = view.findViewById(R.id.genre);
+//        TextView plot = view.findViewById(R.id.plot);
+        final ImageView image = view.findViewById(R.id.image);
+//        TextView countries = view.findViewById(R.id.country);
+//        TextView director = view.findViewById(R.id.director);
+//        TextView actors = view.findViewById(R.id.cast);
+//        RatingBar rating = view.findViewById(R.id.simpleRatingBar);
 
-        Button addWatch = view.findViewById(R.id.addList);
+        final Button addWatch = view.findViewById(R.id.addList);
         Button addMemoir = view.findViewById(R.id.addMemoir);
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieViewModel.initializeVars(getActivity().getApplication());
 //        final TextView test = view.findViewById(R.id.test);
         SharedPreferences shared = getActivity().getSharedPreferences("credentials", Context.MODE_PRIVATE);
         final String username = shared.getString("username", null);
-        addWatch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if(!addWatchButton){
+            addWatch.setEnabled(false);
+        }else {
+            addWatch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                String col1 = name.getText().toString();
-                String col2 = date.getText().toString();
-                if(movieViewModel.findByNameReleaseDateUser(col1,col2,username) == null){
-                Date curDate = new Date(System.currentTimeMillis());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String date = formatter.format(curDate);
-                Movie movie = new Movie(link,col1,col2,date,username);
-                movieViewModel.insert(movie);
-                Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(getActivity(), "It has been added before", Toast.LENGTH_SHORT).show();
+                    String col1 = name.getText().toString();
+                    String col2 = date.getText().toString();
+                    if (movieViewModel.findByNameReleaseDateUser(col1, col2, username) == null) {
+                        Date curDate = new Date(System.currentTimeMillis());
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String date = formatter.format(curDate);
+                        Movie movie = new Movie(link, col1, col2, date, username);
+                        movieViewModel.insert(movie);
+                        Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
+                        addWatch.setEnabled(false);
+                        //container.removeView(addWatch);
+                    } else {
+                        Toast.makeText(getActivity(), "It has been added before", Toast.LENGTH_SHORT).show();
+                        addWatch.setEnabled(false);
+                    }
                 }
-            }
-        });
+            });
+        }
+
         //to do
         addMemoir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bitmap bmp = ((BitmapDrawable)image.getDrawable()).getBitmap();
+                String mName = name.getText().toString();
+                String mDate = date.getText().toString();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment addMemoir = new AddMemoir(bmp,mName,mDate);
+                fragmentTransaction.replace(R.id.content_frame, addMemoir);
+                fragmentTransaction.commit();
 
             }
         });
@@ -162,7 +190,7 @@ public class MovieView extends Fragment {
             date.setText(result[1]);
             genre.setText(result[2]);
             plot.setText(result[3]);
-            Picasso.get().load(result[4]).into(image);
+            Picasso.get().load(result[4]).placeholder(R.mipmap.ic_launcher).into(image);
             countries.setText(result[5]);
             director.setText(result[6]);
             actors.setText(result[7]);

@@ -1,6 +1,449 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-</ConstraintLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a Memoir"
+        android:textSize="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/lbName"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Movie: "-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintVertical_bias="0.05" />-->
+
+    <TextView
+        android:id="@+id/movieName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="TextView"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/btn_star_big_on"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="2"/>
+
+    <TextView
+        android:id="@+id/lbReleaseDt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Release Date:"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/releaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/lbWatchTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Watch Time: "
+        android:layout_gravity="center"
+        android:layout_weight="0.5"/>
+
+    <EditText
+        android:id="@+id/watchDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Date"
+        android:clickable="true"
+        android:inputType="date"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:focusable="false"
+        android:longClickable="false"/>
+
+    <EditText
+        android:id="@+id/watchTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Time"
+        android:clickable="true"
+        android:focusable="false"
+        android:longClickable="false"
+        android:inputType="time"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/lbWatchDate"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Watch Date: "-->
+<!--        tools:layout_editor_absoluteX="16dp"-->
+<!--        tools:layout_editor_absoluteY="285dp" />-->
+
+
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cinema: "
+        android:layout_gravity="center"
+        android:layout_weight="0.5"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+    <Spinner
+        android:id="@+id/cinema"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"/>
+        <Button
+            android:id="@+id/addCinema"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Cinema"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/lbComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comments: "
+        android:layout_gravity="center"
+        android:layout_weight="1"/>
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:textSize="12dp"
+        android:inputType="textPersonName"
+        android:hint="Some Comments"
+        android:text=""
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="3"/>
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rating: "
+        android:layout_gravity="center"
+        android:layout_weight="0.5"/>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:progressTint="@color/yellow"/>
+
+    <Button
+        android:id="@+id/addMemoir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"/>
+
+
+
+</LinearLayout>
+</ScrollView>
+
+
+<!--<Spinner-->
+<!--android:id="@+id/postcode"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_margin="10dp"-->
+<!--android:layout_gravity="center"-->
+<!--android:layout_weight="1"/>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+
+<!--<TextView-->
+<!--    android:id="@+id/title"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Add a Memoir"-->
+<!--    android:textSize="20dp"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.3"-->
+<!--    app:layout_constraintVertical_bias="0.05"/>-->
+
+<!--&lt;!&ndash;    <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;        android:id="@+id/lbName"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:text="Movie: "&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintHorizontal_bias="0.5"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintVertical_bias="0.05" />&ndash;&gt;-->
+
+<!--<TextView-->
+<!--    android:id="@+id/movieName"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:inputType="textPersonName"-->
+<!--    android:text="TextView"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="0.1" />-->
+
+<!--<ImageView-->
+<!--    android:id="@+id/imageView"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:srcCompat="@android:drawable/btn_star_big_on"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.9"-->
+<!--    app:layout_constraintVertical_bias="0"/>-->
+
+<!--<TextView-->
+<!--    android:id="@+id/lbReleaseDt"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Release Date:"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.2"-->
+<!--    app:layout_constraintVertical_bias="0.15" />-->
+
+<!--<TextView-->
+<!--    android:id="@+id/releaseDate"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="TextView"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.7"-->
+<!--    app:layout_constraintVertical_bias="0.15" />-->
+
+<!--<TextView-->
+<!--    android:id="@+id/lbWatchTime"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Watch Time: "-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="0.2"/>-->
+
+<!--<EditText-->
+<!--    android:id="@+id/watchDate"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:ems="10"-->
+<!--    android:hint="Date"-->
+<!--    android:inputType="date"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintVertical_bias="0.3" />-->
+
+<!--<EditText-->
+<!--    android:id="@+id/watchTime"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:ems="10"-->
+<!--    android:hint="Time"-->
+<!--    android:inputType="time"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintVertical_bias="0.4" />-->
+
+<!--&lt;!&ndash;    <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;        android:id="@+id/lbWatchDate"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:text="Watch Date: "&ndash;&gt;-->
+<!--&lt;!&ndash;        tools:layout_editor_absoluteX="16dp"&ndash;&gt;-->
+<!--&lt;!&ndash;        tools:layout_editor_absoluteY="285dp" />&ndash;&gt;-->
+
+
+
+<!--<TextView-->
+<!--    android:id="@+id/textView11"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Cinema: "-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="0.5"/>-->
+
+<!--<Spinner-->
+<!--    android:id="@+id/cinema"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0"-->
+<!--    app:layout_constraintVertical_bias="0.6" />-->
+
+<!--<Spinner-->
+<!--    android:id="@+id/postcode"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="0.6"/>-->
+
+<!--<Button-->
+<!--    android:id="@+id/adCinema"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Add Cinema"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="1"-->
+<!--    app:layout_constraintVertical_bias="0.6" />-->
+
+<!--<TextView-->
+<!--    android:id="@+id/lbComment"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Comments: "-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="0.7"/>-->
+
+<!--<EditText-->
+<!--    android:id="@+id/editText5"-->
+<!--    android:layout_width="250dp"-->
+<!--    android:layout_height="100dp"-->
+<!--    android:ems="10"-->
+<!--    android:inputType="textPersonName"-->
+<!--    android:text="Name"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="0.8"/>-->
+
+<!--<TextView-->
+<!--    android:id="@+id/textView13"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Rating: "-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0"-->
+<!--    app:layout_constraintVertical_bias="0.87" />-->
+
+<!--<RatingBar-->
+<!--    android:id="@+id/ratingBar"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="0.9"/>-->
+
+<!--<Button-->
+<!--    android:id="@+id/addMemoir"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Add"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.5"-->
+<!--    app:layout_constraintVertical_bias="1.2"/>-->
+
+
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

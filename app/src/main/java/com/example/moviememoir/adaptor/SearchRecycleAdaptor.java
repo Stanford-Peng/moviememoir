@@ -1,6 +1,7 @@
 package com.example.moviememoir.adaptor;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,6 @@ public class SearchRecycleAdaptor extends RecyclerView.Adapter<SearchRecycleAdap
                 @Override
                 public void onClick(View v) {
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                    ;
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     Fragment MovieView = new MovieView(searchedMovie.getLink());
                     fragmentTransaction.replace(R.id.content_frame, MovieView);
@@ -80,6 +80,7 @@ public class SearchRecycleAdaptor extends RecyclerView.Adapter<SearchRecycleAdap
             };
             movie.setOnClickListener(listener);
             image.setOnClickListener(listener);
+            movie.setPaintFlags(movie.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
 
 
