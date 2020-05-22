@@ -90,8 +90,8 @@ public class SearchFragment extends Fragment {
             //Log.i("strings",strings[0]);
             ArrayList<SearchedMovie> results = new ArrayList<SearchedMovie>();
             String res = networkConnection.searchMovie(strings[0]);
-            if (!(res.contains("\"status_code\": 34") ||res.isEmpty()||res==null) ){
-                JsonElement jsonElement = new JsonParser().parse(res);
+            if (!(res.contains("\"status_code\":") ||res.isEmpty()||res==null) ){
+            JsonElement jsonElement = new JsonParser().parse(res);
             JsonObject jobject = jsonElement.getAsJsonObject();
             JsonArray items = jobject.getAsJsonArray("items");
             for (int i = 0; i < items.size(); i++) {

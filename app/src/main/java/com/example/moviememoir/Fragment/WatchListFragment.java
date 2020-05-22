@@ -56,6 +56,9 @@ public class WatchListFragment extends Fragment {
 
         final ListView watchList = view.findViewById(R.id.watchList);
 
+        View header = inflater.inflate(R.layout.watch_list_header, watchList, false);
+        watchList.addHeaderView(header);
+
         movieViewModel.getAllMovies();
         SharedPreferences shared = getActivity().getSharedPreferences("credentials", Context.MODE_PRIVATE);
 

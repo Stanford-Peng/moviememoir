@@ -3,7 +3,7 @@ package com.example.moviememoir.entity;
 import java.util.Date;
 
 public class Person {
-    //private int p_id;
+    private int PId;
     private String PGivenName;
     private String PSurname;
     private Character PGender;
@@ -11,6 +11,10 @@ public class Person {
     private String PAddress;
     private String PState;
     private String PPostcode;
+
+    public Person(int PId) {
+        this.PId = PId;
+    }
 
     public Person(String PGivenName, String PSurname, Character PGender, Date PDob, String PAddress, String PState, String PPostcode) {
         this.PGivenName = PGivenName;
@@ -20,6 +24,14 @@ public class Person {
         this.PAddress = PAddress;
         this.PState = PState;
         this.PPostcode = PPostcode;
+    }
+
+    public int getPId() {
+        return PId;
+    }
+
+    public void setPId(int PId) {
+        this.PId = PId;
     }
 
     public String getPGivenName() {

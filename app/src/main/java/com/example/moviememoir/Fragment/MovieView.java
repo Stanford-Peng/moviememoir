@@ -117,7 +117,7 @@ public class MovieView extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Fragment addMemoir = new AddMemoir(bmp,mName,mDate);
-                fragmentTransaction.replace(R.id.content_frame, addMemoir);
+                fragmentTransaction.replace(R.id.content_frame, addMemoir).addToBackStack(null);
                 fragmentTransaction.commit();
 
             }

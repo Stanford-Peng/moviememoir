@@ -1,29 +1,19 @@
 package com.example.moviememoir.networkconnection;
 
 
-import android.os.Environment;
 import android.util.Log;
 
 import com.example.moviememoir.entity.Cinema;
 import com.example.moviememoir.entity.Credentials;
+import com.example.moviememoir.entity.Memoir;
 import com.example.moviememoir.entity.Person;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.Date;
-//import java.text.SimpleDateFormat;
-//import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -132,7 +122,7 @@ public class NetworkConnection {
         }catch(Exception e){
             e.printStackTrace();
         }
-        Log.i("url",methodPath);
+        //Log.i("url",methodPath);
         return ja;
     }
 
@@ -142,14 +132,14 @@ public class NetworkConnection {
         Request.Builder builder = new Request.Builder();
         builder.url("https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
                 SEARCH_ID_cx + "&q=movie+" + movie);
-//        Log.i("url", "https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
-//                SEARCH_ID_cx + "&q=" + movie +"&num=3");
+        Log.i("url", "https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" +
+               SEARCH_ID_cx + "&q=" + movie +"&num=3");
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
             resStr = response.body().string();
             //jo = new JSONObject(resStr);
-            Log.i("Search Response: ", resStr);
+            //Log.i("Search Response: ", resStr);
             //writeFile("search.txt",resStr);
         }catch(Exception e){
             e.printStackTrace();
@@ -186,7 +176,7 @@ public class NetworkConnection {
         try{
             Response response = client.newCall(request).execute();
             resStr = response.body().string();
-            Log.i("Cinema Response: ", resStr);
+            //Log.i("Cinema Response: ", resStr);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -201,9 +191,9 @@ public class NetworkConnection {
         final String path = "moviememoir.cinema";
         //builder.url( BASE_URL + path);
         Cinema cinema = new Cinema(cName,cPostcode);
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").create();
         String cinemaJson = gson.toJson(cinema);
-        Log.i("Cinema:",cinemaJson);
+        //Log.i("Cinema:",cinemaJson);
         RequestBody body = RequestBody.create(cinemaJson, JSON);
         Request request = builder.url(BASE_URL + path).post(body).build();
         try{
@@ -216,6 +206,53 @@ public class NetworkConnection {
         return resStr;
 
     }
+
+    public String addMemoir(String mName, float mRatingScore, Date mReleaseDate, Date mWatchDate, Date mWatchTime, String mComment ,int pId, int cId){
+        String resStr = "";
+        Request.Builder builder = new Request.Builder();
+        final String path = "moviememoir.memoir";
+        //builder.url( BASE_URL + path);
+        //Cinema cinema = new Cinema(cName,cPostcode);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").create();
+        Person person = new Person(pId);
+        Cinema cinema = new Cinema(cId);
+        Memoir memoir = new Memoir(mName, mRatingScore, mReleaseDate, mWatchDate, mWatchTime, mComment,person, cinema);
+        String memoirJson= gson.toJson(memoir);
+        Log.i("Memoir Json:",memoirJson);
+        RequestBody body = RequestBody.create(memoirJson, JSON);
+        Request request = builder.url(BASE_URL + path).post(body).build();
+        try{
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return resStr;
+
+    }
+
+    public String getMemoirs(String pId){
+        String resStr = "";
+        Request.Builder builder = new Request.Builder();
+        final String path = "moviememoir.memoir/findByPId/" + pId;
+        builder.url( BASE_URL + path);
+        Log.i("memoir request url",BASE_URL + path);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+            Log.i("Memoir Response: ", resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return resStr;
+
+
+    }
+
+}
 
 //    public String getCast(String link){
 //        String resStr = null;
@@ -238,4 +275,4 @@ public class NetworkConnection {
 
 
 
-}
+
