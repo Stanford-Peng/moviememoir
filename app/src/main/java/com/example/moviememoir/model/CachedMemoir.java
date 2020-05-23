@@ -11,6 +11,23 @@ public class CachedMemoir {
     String mdbLink;
 
 
+    String[] genres;
+
+    String userRating;
+
+    public CachedMemoir(String memoirName, String memoirComment, String releaseDate, String watchDate, String watchTime, String imageLink, String publicRating, String mdbLink, String[] genres, String userRating) {
+        this.memoirName = memoirName;
+        this.memoirComment = memoirComment;
+        this.releaseDate = releaseDate;
+        this.watchDate = watchDate;
+        this.watchTime = watchTime;
+        this.imageLink = imageLink;
+        this.publicRating = publicRating;
+        this.mdbLink = mdbLink;
+        this.genres = genres;
+        this.userRating = userRating;
+
+    }
 
     public CachedMemoir(String memoirName, String memoirComment, String releaseDate, String watchDate, String watchTime, String imageLink, String publicRating, String mdbLink) {
         this.memoirName = memoirName;
@@ -21,6 +38,14 @@ public class CachedMemoir {
         this.imageLink = imageLink;
         this.publicRating = publicRating;
         this.mdbLink = mdbLink;
+    }
+
+    public String getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(String userRating) {
+        this.userRating = userRating;
     }
 
     public String getMemoirName() {
@@ -86,5 +111,14 @@ public class CachedMemoir {
 
     public void setMdbLink(String mdbLink) {
         this.mdbLink = mdbLink;
+    }
+
+
+    public String[] getGenres() {
+        return genres;
+    }
+
+    public void setGenres(String[] genres) {
+        this.genres = genres;
     }
 }

@@ -148,10 +148,10 @@ public class NetworkConnection {
         return resStr;
     }
 
-    public String moreMovie(String link, String param){
+    public String moreMovie(String link, String path){
         String resStr = null;
         Request.Builder builder = new Request.Builder();
-        builder.url("https://api.themoviedb.org/3/movie/" + link + param +"?api_key=" + MDB_KEY + "&external_source=imdb_id");
+        builder.url("https://api.themoviedb.org/3/movie/" + link + path +"?api_key=" + MDB_KEY + "&external_source=imdb_id");
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
@@ -163,6 +163,34 @@ public class NetworkConnection {
             e.printStackTrace();
         }
 
+        return resStr;
+
+    }
+
+    public String getMovieByName (String name, String[] params, String[] values){
+        String resStr = null;
+        name = name.replace(" ", "+");
+        Request.Builder builder = new Request.Builder();
+        String query_parameter = "";
+        if (params != null && values != null) {
+            for (int i = 0; i < params.length; i++) {
+                query_parameter += "&";
+                query_parameter += params[i];
+                query_parameter += "=";
+                query_parameter += values[i];
+            }
+        }
+        builder.url("https://api.themoviedb.org/3/search/movie/" + "?api_key=" + MDB_KEY + "&query=" + name + query_parameter);
+        Log.i("getMovieByName:","https://api.themoviedb.org/3/search/movie/" + "?api_key=" + MDB_KEY + "&query=" + name + query_parameter);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+            //jo = new JSONObject(resStr);
+            //Log.i("getMovieByName: ", resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return resStr;
 
     }
@@ -249,8 +277,9 @@ public class NetworkConnection {
 
         return resStr;
 
-
     }
+
+
 
 }
 

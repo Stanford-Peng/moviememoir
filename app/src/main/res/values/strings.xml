@@ -11,6 +11,15 @@
         <item>WA</item>
     </string-array>
 
+    <string-array name="sort_option">
+        <item>Default</item>>
+        <item>Watch Date</item>
+        <item>User Rating</item>
+        <item>Public Rating</item>
+    </string-array>
+
+
+
     <string name="Open">open</string>
     <string name="Close">close</string>
 

@@ -1,6 +1,7 @@
 package com.example.moviememoir.Fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -49,6 +50,7 @@ public class SearchFragment extends Fragment {
     List<String> links = new ArrayList<String>();
     private RecyclerView recyclerView;
     private LayoutManager layoutManager;
+    private ProgressDialog progressDialog;
     public SearchFragment() {
     }
 
@@ -59,6 +61,9 @@ public class SearchFragment extends Fragment {
         final EditText inputMovie = view.findViewById(R.id.editText);
 
         Button searchBtn = view.findViewById(R.id.search);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait patiently");
         networkConnection = new NetworkConnection();
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +89,10 @@ public class SearchFragment extends Fragment {
 
     private class SearchTask extends AsyncTask<String, Void, ArrayList<SearchedMovie>>
     {
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
 
         @Override
         protected ArrayList<SearchedMovie> doInBackground(String... strings) {
@@ -115,13 +124,12 @@ public class SearchFragment extends Fragment {
                     e.printStackTrace();
                 }
                 }
-
-
             }
         }
             //Log.i("link", links.get(0));
             return results;
         }
+
 
         @Override
         protected void onPostExecute(ArrayList<SearchedMovie> al) {
@@ -132,7 +140,7 @@ public class SearchFragment extends Fragment {
             recyclerView.setAdapter(adaptor);
             layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
-
+            progressDialog.dismiss();
 
         }
     }

@@ -3,6 +3,7 @@ package com.example.moviememoir.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -116,6 +117,7 @@ public class WatchListFragment extends Fragment {
             Log.i("mName",mName);
             imageView.setOnClickListener(
                     new View.OnClickListener() {
+
                         @Override
                         public void onClick(View v) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -140,9 +142,18 @@ public class WatchListFragment extends Fragment {
                                         }
                                     });
 
-                            AlertDialog alert = builder.create();
+                            final AlertDialog alert = builder.create();
+                            alert.setOnShowListener(new DialogInterface.OnShowListener(){
+                                @Override
+                                public void onShow(DialogInterface dialog) {
+                                    alert.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                                    alert.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                                }
+                            } );
                             alert.show();
+
                         }
+
                     }
             );
 
