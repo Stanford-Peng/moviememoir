@@ -143,13 +143,13 @@ public class WatchListFragment extends Fragment {
                                     });
 
                             final AlertDialog alert = builder.create();
-                            alert.setOnShowListener(new DialogInterface.OnShowListener(){
-                                @Override
-                                public void onShow(DialogInterface dialog) {
-                                    alert.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-                                    alert.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                                }
-                            } );
+//                            alert.setOnShowListener(new DialogInterface.OnShowListener(){
+//                                @Override
+//                                public void onShow(DialogInterface dialog) {
+//                                    alert.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+//                                    alert.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+//                                }
+//                            } );
                             alert.show();
 
                         }

@@ -40,7 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Pattern;
+//import java.util.regex.Pattern;
 
 public class AddMemoir extends Fragment {
     private Bitmap mImage;

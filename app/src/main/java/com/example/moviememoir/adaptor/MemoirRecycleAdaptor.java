@@ -1,7 +1,11 @@
 package com.example.moviememoir.adaptor;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +42,7 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
         public TextView releaseDate;
         public TextView addTime;
         public RatingBar rating;
+        public TextView ratingLabel;
         // a constructor that accepts the entire View (itemView)
         // provides a reference and access to all the views in each row
         public ViewHolder(View itemView) {
@@ -48,13 +53,14 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
             releaseDate = itemView.findViewById(R.id.releaseDate);
             addTime = itemView.findViewById(R.id.addTime);
             rating = itemView.findViewById(R.id.ratingBar);
+            ratingLabel = itemView.findViewById(R.id.ratingLabel);
         }
 
     }
 
     private List<CachedMemoir> cachedMemoirs;
     private Context context;
-    private String sort ="";
+    private String sort ="Default";
     private String filter ="Default";
     private String ratingControl = "user" ;
     //private int extraView = 0;
@@ -148,6 +154,7 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
             TextView releaseDate = holder.releaseDate;
             TextView addTime = holder.addTime;
             RatingBar ratingBar = holder.rating;
+            TextView ratingLb = holder.ratingLabel;
             movie.setText(cachedMemoir.getMemoirName());
             Picasso.get().load(cachedMemoir.getImageLink()).placeholder(R.mipmap.ic_launcher).into(image);
             comment.setText(cachedMemoir.getMemoirComment());
@@ -156,6 +163,11 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
 
             if (ratingControl == "public") {
                 ratingBar.setRating(Float.valueOf(cachedMemoir.getPublicRating()) / 2);
+                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+                stars.getDrawable(2).setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
+                ratingLb.setText("Public Rating");
+//                Drawable stars = ratingBar.getProgressDrawable();
+//                stars.setTint( Color.BLUE);
             } else {
                 ratingBar.setRating(Float.valueOf(cachedMemoir.getUserRating()));
             }

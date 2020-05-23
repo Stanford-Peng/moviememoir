@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.moviememoir.Fragment.HomeFragment;
 import com.example.moviememoir.Fragment.MovieMemoir;
+import com.example.moviememoir.Fragment.ReportsFragment;
 import com.example.moviememoir.Fragment.SearchFragment;
 import com.example.moviememoir.Fragment.WatchListFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -92,6 +93,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.watchlist:
                 replaceFragment(new WatchListFragment());
                 break;
+            case R.id.reports:
+                replaceFragment(new ReportsFragment());
+                break;
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

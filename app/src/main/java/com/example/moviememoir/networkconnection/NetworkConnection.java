@@ -279,6 +279,25 @@ public class NetworkConnection {
 
     }
 
+    public String getForPieChart(String pId, String startDate, String endDate){
+        String resStr = "";
+        Request.Builder builder = new Request.Builder();
+        final String path = "moviememoir.memoir/findWatchedTimesPerPostcode/" + pId + "/" + startDate + "/" + endDate;
+        builder.url( BASE_URL + path);
+        Log.i("memoir pie url",BASE_URL + path);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+            Log.i("Memoir Pie Response: ", resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return resStr;
+
+    }
+
 
 
 }

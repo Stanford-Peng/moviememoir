@@ -1,5 +1,6 @@
 package com.example.moviememoir.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -43,6 +44,7 @@ public class MovieView extends Fragment {
     private NetworkConnection networkConnection = null;
     private MovieViewModel movieViewModel;
     private Boolean addWatchButton;
+    private ProgressDialog mProgressDialog;
     public MovieView(String link) {
         this.link=link;
         this.addWatchButton=true;
@@ -63,7 +65,12 @@ public class MovieView extends Fragment {
 
         networkConnection = new NetworkConnection();
         GetDetails getDetails = new GetDetails();
+        mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setTitle("Loading");
+        mProgressDialog.setMessage("Please wait patiently");
         getDetails.execute(link);
+
+
         final TextView name = view.findViewById(R.id.name);
         final TextView date = view.findViewById(R.id.date);
 //        TextView genre = view.findViewById(R.id.genre);
@@ -128,6 +135,12 @@ public class MovieView extends Fragment {
     }
 
     private class GetDetails extends AsyncTask<String, Void, String[]>{
+
+        @Override
+        protected void onPreExecute() {
+
+            mProgressDialog.show();
+        }
 
         @Override
         protected String[] doInBackground(String... strings) {
@@ -195,6 +208,7 @@ public class MovieView extends Fragment {
             director.setText(result[6]);
             actors.setText(result[7]);
             rating.setRating(Float.valueOf(result[8])/2);
+            mProgressDialog.dismiss();
         }
 
     }
