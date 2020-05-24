@@ -64,7 +64,7 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
     private String filter ="Default";
     private String ratingControl = "user" ;
     //private int extraView = 0;
-    private List<CachedMemoir> sortedMemoirs= new ArrayList<CachedMemoir>();
+    private List<CachedMemoir> sortedMemoirs= cachedMemoirs;
 
 
 //    public MemoirRecycleAdaptor(List<CachedMemoir> cachedMemoirs, Context context, String sort) {

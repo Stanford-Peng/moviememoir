@@ -2,9 +2,11 @@ package com.example.moviememoir.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +31,15 @@ import com.example.moviememoir.R;
 import com.example.moviememoir.entity.Movie;
 import com.example.moviememoir.networkconnection.NetworkConnection;
 import com.example.moviememoir.viewmodel.MovieViewModel;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareButton;
+import com.facebook.share.widget.ShareDialog;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -39,12 +50,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static android.app.Activity.RESULT_OK;
+
 public class MovieView extends Fragment {
     private String link;
     private NetworkConnection networkConnection = null;
     private MovieViewModel movieViewModel;
     private Boolean addWatchButton;
     private ProgressDialog mProgressDialog;
+    private CallbackManager callbackManager;
+    private ShareDialog shareDialog;
+
     public MovieView(String link) {
         this.link=link;
         this.addWatchButton=true;
@@ -55,10 +71,12 @@ public class MovieView extends Fragment {
         this.addWatchButton = addWatchButton;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_view_fragment, container, false);
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 //        TextView linkView = view.findViewById(R.id.link);
 //        linkView.setText(link);
         Log.i("link",link);
@@ -114,7 +132,7 @@ public class MovieView extends Fragment {
             });
         }
 
-        //to do
+        //add Memoir
         addMemoir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,9 +148,49 @@ public class MovieView extends Fragment {
             }
         });
 
+        callbackManager = CallbackManager.Factory.create();
+        final ShareButton share = view.findViewById(R.id.share);
+
+        share.setFragment(this);
+        share.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.i("FaceBook:","OKAY");
+                Toast.makeText(getActivity(), "You have successfully shared this movie", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(getActivity(), "You have cancelled the sharing", Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getActivity(), "There is some error during sharing", Toast.LENGTH_LONG).show();
+
+            }
+        });
+        ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote("My Movie").
+                setContentUrl(Uri.parse("https://www.imdb.com/title/" + link)).
+                setShareHashtag(new ShareHashtag.Builder().setHashtag("#Movie").
+                        build()).
+                build();
+        share.setShareContent(linkContent);
 
         return view;
+
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     private class GetDetails extends AsyncTask<String, Void, String[]>{
 
@@ -153,36 +211,52 @@ public class MovieView extends Fragment {
             String date = jobject.getAsJsonPrimitive("release_date").getAsString();
             String genre = "";
             String countries ="";
-            for (JsonElement e :jobject.getAsJsonArray("genres")){
-                genre = genre + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString()+"/";
-            };
+            String plot="";
+            if(jobject.has("genres")&&!jobject.get("genres").isJsonNull()) {
+                for (JsonElement e : jobject.getAsJsonArray("genres")) {
+                    genre = genre + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString() + "/";
+                }
+                ;
+            }
             genre = genre.substring(0, genre.length() - 1);
-
-            for (JsonElement e :jobject.getAsJsonArray("production_countries")){
-                countries = countries + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString()+"/";
-            };
+            if(jobject.has("production_countries")&&!jobject.get("production_countries").isJsonNull()) {
+                for (JsonElement e : jobject.getAsJsonArray("production_countries")) {
+                    countries = countries + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString() + "/";
+                }
+                ;
+            }
             countries = countries.substring(0, countries.length() - 1);
+            if(jobject.has("overview")&&!jobject.get("overview").isJsonNull()) {
+                 plot = jobject.getAsJsonPrimitive("overview").getAsString();
+            }
 
-            String plot = jobject.getAsJsonPrimitive("overview").getAsString();
-            String image = "https://image.tmdb.org/t/p/w500" + jobject.getAsJsonPrimitive("backdrop_path").getAsString();
+            String image="https://image.tmdb.org/t/p/w500";
+            if(jobject.has("backdrop_path")&&!jobject.get("backdrop_path").isJsonNull()&&jobject.getAsJsonPrimitive("backdrop_path")!= null) {
+                image = "https://image.tmdb.org/t/p/w500" + jobject.getAsJsonPrimitive("backdrop_path").getAsString();
+            }
 
             JsonObject cast = new JsonParser().parse(networkConnection.moreMovie(strings[0],"/credits")).getAsJsonObject();
             String director="";
             String actors="";
-            for (JsonElement e : cast.getAsJsonArray("cast"))
-            {
-                    actors = actors + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString() + " : " +e.getAsJsonObject().getAsJsonPrimitive("character").getAsString() + "\n";
-            }
-
-            for (JsonElement e : cast.getAsJsonArray("crew")){
-                ;
-                if(e.getAsJsonObject().getAsJsonPrimitive("job").getAsString().equals("Director")){
-                    director = director + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString() + "/";
+            if(cast.has("cast")&&!cast.get("cast").isJsonNull()) {
+                for (JsonElement e : cast.getAsJsonArray("cast")) {
+                    actors = actors + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString() + " : " + e.getAsJsonObject().getAsJsonPrimitive("character").getAsString() + "\n";
                 }
+            }
+            if(cast.has("crew")&&!cast.get("crew").isJsonNull()) {
+                for (JsonElement e : cast.getAsJsonArray("crew")) {
 
+                    if (e.getAsJsonObject().getAsJsonPrimitive("job").getAsString().equals("Director")) {
+                        director = director + e.getAsJsonObject().getAsJsonPrimitive("name").getAsString() + "/";
+                    }
+
+                }
             }
             director = director.substring(0,director.length()-1);
-            String rating = jobject.getAsJsonPrimitive("vote_average").getAsString();
+            String rating = "0";
+            if(jobject.has("vote_average")&&!jobject.get("vote_average").isJsonNull()) {
+                rating = jobject.getAsJsonPrimitive("vote_average").getAsString();
+            }
             String[] result = new String[]{name,date,genre,plot,image,countries,director,actors,rating};
             return result;
         }
@@ -214,3 +288,41 @@ public class MovieView extends Fragment {
     }
 
 }
+//shareDialog = new ShareDialog(getActivity());
+
+//        share.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+//
+//                    @Override
+//                    public void onSuccess(Sharer.Result result) {
+//                        Toast.makeText(getActivity(), "You have successfully shared this movie", Toast.LENGTH_LONG).show();
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                        Toast.makeText(getActivity(), "You have cancelled the sharing", Toast.LENGTH_LONG).show();
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(FacebookException error) {
+//                        Toast.makeText(getActivity(), "There is some error during sharing", Toast.LENGTH_LONG).show();
+//
+//                    }
+//                });
+//                getActivity().setResult(RESULT_OK);
+//                ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote("My Movie").
+//                        setContentUrl(Uri.parse("https://www.imdb.com/title/" + link)).
+//                        setShareHashtag(new ShareHashtag.Builder().setHashtag("#Movie").
+//                                build()).
+//                        build();
+//                if (ShareDialog.canShow(ShareLinkContent.class)) {
+//                    shareDialog.show(linkContent);
+//                }
+//
+//                share.setShareContent(linkContent);
+//            }
+//        });
+//

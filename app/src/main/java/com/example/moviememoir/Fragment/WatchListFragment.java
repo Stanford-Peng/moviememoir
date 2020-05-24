@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -31,8 +33,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviememoir.R;
 import com.example.moviememoir.entity.Movie;
 import com.example.moviememoir.viewmodel.MovieViewModel;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,11 +56,15 @@ public class WatchListFragment extends Fragment {
     String[] colHEAD = new String[] {"MOVIE","RELEASE DATE","ADDED DATE"};
     int[] dataCell = new int[] {R.id.mName,R.id.mReleaseDate,R.id.mAddDate};
     String username;
+   // private static final String EMAIL = "email";
+//    CallbackManager callbackManager;
+//    ShareDialog shareDialog;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.watchlist_fragment, container, false);
+        //FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         watchListArray = new ArrayList<HashMap<String,String>>();
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
@@ -84,7 +99,7 @@ public class WatchListFragment extends Fragment {
             }
 
         });
-
+        //callbackManager = CallbackManager.Factory.create();
 
         return view;
 
@@ -172,6 +187,7 @@ public class WatchListFragment extends Fragment {
 
             name.setPaintFlags(name.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
+
             return convertView;
         }
 
@@ -184,6 +200,43 @@ public class WatchListFragment extends Fragment {
 
 
 }
+
+//        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+//        loginButton.setReadPermissions(Arrays.asList(EMAIL));
+// If you are using in a fragment, call
+//        loginButton.setFragment(this);
+
+// Callback registration
+//        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                // App code
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                // App code
+//            }
+//
+//            @Override
+//            public void onError(FacebookException exception) {
+//                // App code
+//            }
+//        });
+
+//        Button share = view.findViewById(R.id.share);
+//        shareDialog = new ShareDialog(getActivity());
+//        share.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote("Test").setContentUrl(Uri.parse("https://youtube.com") ).build();
+//                if(ShareDialog.canShow(ShareLinkContent.class)){
+//                    shareDialog.show(linkContent);
+//                }
+//
+//            }
+//        });
+
 
 //myListAdapter.getView();
 

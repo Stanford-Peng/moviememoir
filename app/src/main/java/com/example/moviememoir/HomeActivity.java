@@ -20,18 +20,23 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.moviememoir.Fragment.HomeFragment;
+import com.example.moviememoir.Fragment.MapsFragment;
 import com.example.moviememoir.Fragment.MovieMemoir;
 import com.example.moviememoir.Fragment.ReportsFragment;
 import com.example.moviememoir.Fragment.SearchFragment;
 import com.example.moviememoir.Fragment.WatchListFragment;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    String username;
+    private String username;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    HomeFragment frag;
+    private HomeFragment frag;
+//    private CallbackManager callbackManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +101,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.reports:
                 replaceFragment(new ReportsFragment());
                 break;
+            case R.id.maps:
+                replaceFragment(new MapsFragment());
+                break;
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -108,7 +116,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.content_frame, nextFragment);
         fragmentTransaction.commit();
     }
+
 }
+
+//        FacebookSdk.sdkInitialize(this);
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        AppEventsLogger.activateApp(this);
+//callbackManager = CallbackManager.Factory.create();
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
+//
+//    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

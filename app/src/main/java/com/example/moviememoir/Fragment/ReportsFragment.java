@@ -112,7 +112,7 @@ public class ReportsFragment extends Fragment {
 
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setNoDataText("Please pick the date to fill this pie chart");
-        barChart.setNoDataText("Please select the year to fill this bar chart");
+
         Button showPie = view.findViewById(R.id.showPie);
         showPie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +146,7 @@ public class ReportsFragment extends Fragment {
 
         //bar chart
         barChart = view.findViewById(R.id.barChart);
+        barChart.setNoDataText("Please select the year to fill this bar chart");
         Button showBar = view.findViewById(R.id.showBar);
         showBar.setOnClickListener(new View.OnClickListener() {
             @Override

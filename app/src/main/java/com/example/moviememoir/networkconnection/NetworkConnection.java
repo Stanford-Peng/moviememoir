@@ -315,6 +315,25 @@ public class NetworkConnection {
         return resStr;
     }
 
+    public String getPersonAddress(String pId){
+        String resStr="";
+        Request.Builder builder = new Request.Builder();
+        final String path = "moviememoir.person/" + pId;
+        builder.url(BASE_URL+path);
+        Log.i("Bar Chart URL",BASE_URL+path);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+            Log.i("Person Address Response: ", resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return resStr;
+
+
+    }
+
 
 
 }
