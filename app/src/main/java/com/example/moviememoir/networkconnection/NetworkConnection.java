@@ -298,6 +298,23 @@ public class NetworkConnection {
 
     }
 
+    public String getForBarChart(String pId, String year){
+        String resStr="";
+        Request.Builder builder = new Request.Builder();
+        final String path = "moviememoir.memoir/findWatchedTimesPerMonthInYear/" + pId + "/" + year;
+        builder.url(BASE_URL+path);
+        Log.i("Bar Chart URL",BASE_URL+path);
+        Request request = builder.build();
+        try{
+            Response response = client.newCall(request).execute();
+            resStr = response.body().string();
+            Log.i("Memoir Bar Response: ", resStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return resStr;
+    }
+
 
 
 }
