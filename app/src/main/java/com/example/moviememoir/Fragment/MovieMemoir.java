@@ -192,6 +192,7 @@ public class MovieMemoir extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         filter = spinnerFilter.getItemAtPosition(position).toString();
+
                         memoirRecycleAdaptor = new MemoirRecycleAdaptor(cachedMemoirs, getActivity(), sort, filter);
                         memoirRecycleView.setAdapter(memoirRecycleAdaptor);
                         memoirRecycleView.setLayoutManager(layoutManager);

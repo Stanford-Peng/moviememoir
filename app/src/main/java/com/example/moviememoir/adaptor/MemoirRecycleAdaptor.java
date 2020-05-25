@@ -60,11 +60,11 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
 
     private List<CachedMemoir> cachedMemoirs;
     private Context context;
-    private String sort ="Default";
-    private String filter ="Default";
+    private String sort;
+    private String filter;
     private String ratingControl = "user" ;
     //private int extraView = 0;
-    private static List<CachedMemoir> sortedMemoirs = new ArrayList<>();
+    private List<CachedMemoir> sortedMemoirs = new ArrayList<>();
 
 
 //    public MemoirRecycleAdaptor(List<CachedMemoir> cachedMemoirs, Context context, String sort) {
@@ -78,6 +78,16 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
         this.context = context;
         this.sort = sort;
         this.filter = filter;
+        if(filter.equals("Default")){
+            sortedMemoirs = cachedMemoirs;
+        }else {
+//            sortedMemoirs.clear();
+            for (CachedMemoir cm: cachedMemoirs) {
+                if(Arrays.asList(cm.getGenres()).toString().contains(filter)) {
+                    sortedMemoirs.add(cm);
+                }
+            }
+        }
     }
 
     public MemoirRecycleAdaptor(List<CachedMemoir> cachedMemoirs, Context context) {
@@ -89,6 +99,8 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
         this.cachedMemoirs = cachedMemoirs;
         notifyDataSetChanged();
     }
+
+
 
     @NonNull
     @Override
@@ -194,32 +206,14 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
 
     @Override
     public int getItemCount() {
-//        sortedMemoirs = new ArrayList<>();
-//        if(filter.equals("Default")){
-//            sortedMemoirs=cachedMemoirs;
-//        }else {
-//            for (CachedMemoir cm: cachedMemoirs) {
-//                if(cm.getGenres().toString().contains(filter)) {
-//                    sortedMemoirs.add(cm);
-//                }
-//            }
-//        }
 
 
-        if(filter.equals("Default")){
-            sortedMemoirs = cachedMemoirs;
-        }else {
-            sortedMemoirs = new ArrayList<>();
-            for (CachedMemoir cm: cachedMemoirs) {
-                if(Arrays.asList(cm.getGenres()).toString().contains(filter)) {
-                    sortedMemoirs.add(cm);
-                }
-            }
-        }
-        int size = sortedMemoirs.size();
+
+
+
 //        Log.i("filter",filter);
 //        Log.i("sorted",sortedMemoirs.toString());
-        return size;
+        return sortedMemoirs.size();
     }
 
     public void setRatingControl(String ratingControl) {
@@ -243,6 +237,17 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
 //        }else {
 //            for (CachedMemoir cm: cachedMemoirs) {
 //                if(Arrays.asList(cm.getGenres()).toString().contains(filter)) {
+//                    sortedMemoirs.add(cm);
+//                }
+//            }
+//        }
+
+//        sortedMemoirs = new ArrayList<>();
+//        if(filter.equals("Default")){
+//            sortedMemoirs=cachedMemoirs;
+//        }else {
+//            for (CachedMemoir cm: cachedMemoirs) {
+//                if(cm.getGenres().toString().contains(filter)) {
 //                    sortedMemoirs.add(cm);
 //                }
 //            }
