@@ -52,6 +52,8 @@ public class MovieMemoir extends Fragment {
     private Set<String> genresOption;
     private String sort = "Default";
     private String filter = "Default";
+    private  Spinner spinnerSort;
+    private  Spinner spinnerFilter;
 
     //List<CachedMemoir> sortedMemoirs;
     public MovieMemoir() {
@@ -70,44 +72,9 @@ public class MovieMemoir extends Fragment {
         mProgressDialog.setTitle("Loading");
         mProgressDialog.setMessage("Please wait patiently");
         layoutManager = new LinearLayoutManager(getContext());
+        spinnerSort = view.findViewById(R.id.sort);
+        spinnerFilter = view.findViewById(R.id.filter);
         getMemoirs.execute(pId);
-        final Spinner spinnerSort = view.findViewById(R.id.sort);
-
-        spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sort = spinnerSort.getItemAtPosition(position).toString();
-                memoirRecycleAdaptor = new MemoirRecycleAdaptor(cachedMemoirs, getActivity(), sort, filter);
-                memoirRecycleView.setAdapter(memoirRecycleAdaptor);
-                memoirRecycleView.setLayoutManager(layoutManager);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        final Spinner spinnerFilter = view.findViewById(R.id.filter);
-
-        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                    @Override
-                                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                                        filter = spinnerFilter.getItemAtPosition(position).toString();
-                                                        memoirRecycleAdaptor = new MemoirRecycleAdaptor(cachedMemoirs, getActivity(), sort, filter);
-                                                        memoirRecycleView.setAdapter(memoirRecycleAdaptor);
-                                                        memoirRecycleView.setLayoutManager(layoutManager);
-
-                                                    }
-
-                                                    @Override
-                                                    public void onNothingSelected(AdapterView<?> parent) {
-
-                                                    }
-                                                }
-        );
-
 
         return view;
     }
@@ -172,16 +139,13 @@ public class MovieMemoir extends Fragment {
                                 } else {
                                     genres = new String[]{""};
                                 }
-                            }
-                            else {
+                            } else {
                                 genres = new String[]{""};
                             }
-                        }
-                        else {
+                        } else {
                             genres = new String[]{""};
                         }
-                    }
-                    else {
+                    } else {
                         genres = new String[]{""};
                     }
                     CachedMemoir cachedMemoir = new CachedMemoir(memoirName, memoirComment, releaseDate, watchDate, watchTime, imageLink, publicRating, imdbLink, genres, rating);
@@ -194,8 +158,8 @@ public class MovieMemoir extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<CachedMemoir> cachedMemoirs) {
-            memoirRecycleAdaptor = new MemoirRecycleAdaptor(cachedMemoirs, getActivity());//getActivity()
+        protected void onPostExecute(ArrayList<CachedMemoir> results) {
+            memoirRecycleAdaptor = new MemoirRecycleAdaptor(results, getActivity(),sort,filter);//getActivity()
             memoirRecycleView.setAdapter(memoirRecycleAdaptor);
             //layoutManager = new LinearLayoutManager(getContext());
             memoirRecycleView.setLayoutManager(layoutManager);
@@ -209,6 +173,36 @@ public class MovieMemoir extends Fragment {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, new ArrayList<String>(genresOption));
             final Spinner spinnerFilter = getView().findViewById(R.id.filter);
             spinnerFilter.setAdapter(arrayAdapter);
+            spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    sort = spinnerSort.getItemAtPosition(position).toString();
+                    memoirRecycleAdaptor = new MemoirRecycleAdaptor(cachedMemoirs, getActivity(), sort, filter);
+                    memoirRecycleView.setAdapter(memoirRecycleAdaptor);
+                    memoirRecycleView.setLayoutManager(layoutManager);
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        filter = spinnerFilter.getItemAtPosition(position).toString();
+                        memoirRecycleAdaptor = new MemoirRecycleAdaptor(cachedMemoirs, getActivity(), sort, filter);
+                        memoirRecycleView.setAdapter(memoirRecycleAdaptor);
+                        memoirRecycleView.setLayoutManager(layoutManager);
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             mProgressDialog.dismiss();
         }
     }

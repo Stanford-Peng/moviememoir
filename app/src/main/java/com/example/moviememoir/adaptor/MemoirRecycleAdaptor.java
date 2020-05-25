@@ -64,7 +64,7 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
     private String filter ="Default";
     private String ratingControl = "user" ;
     //private int extraView = 0;
-    private List<CachedMemoir> sortedMemoirs= cachedMemoirs;
+    private static List<CachedMemoir> sortedMemoirs = new ArrayList<>();
 
 
 //    public MemoirRecycleAdaptor(List<CachedMemoir> cachedMemoirs, Context context, String sort) {
@@ -205,19 +205,21 @@ public class MemoirRecycleAdaptor extends RecyclerView.Adapter<MemoirRecycleAdap
 //            }
 //        }
 
+
         if(filter.equals("Default")){
-            sortedMemoirs=cachedMemoirs;
+            sortedMemoirs = cachedMemoirs;
         }else {
-            sortedMemoirs.clear();
+            sortedMemoirs = new ArrayList<>();
             for (CachedMemoir cm: cachedMemoirs) {
                 if(Arrays.asList(cm.getGenres()).toString().contains(filter)) {
                     sortedMemoirs.add(cm);
                 }
             }
         }
+        int size = sortedMemoirs.size();
 //        Log.i("filter",filter);
 //        Log.i("sorted",sortedMemoirs.toString());
-        return sortedMemoirs.size();
+        return size;
     }
 
     public void setRatingControl(String ratingControl) {
