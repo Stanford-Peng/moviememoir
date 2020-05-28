@@ -12,6 +12,7 @@
         android:layout_weight="1"
         android:clickable="true"
         android:text="Movie"
+        android:textSize="16sp"
         android:textStyle="italic" />
 
     <TextView
@@ -19,6 +20,7 @@
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="16sp"
         android:text="Release Date" />
 
     <TextView
@@ -26,6 +28,7 @@
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="16sp"
         android:text="Add Date" />
 
     <ImageView
