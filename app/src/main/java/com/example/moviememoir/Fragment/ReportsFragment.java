@@ -43,6 +43,8 @@ import com.google.gson.JsonParser;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static com.github.mikephil.charting.animation.Easing.EaseInSine;
@@ -222,11 +224,31 @@ public class ReportsFragment extends Fragment {
             JsonArray jsonArray = jsonElement.getAsJsonArray();
             ArrayList<BarEntry> barEntries= new ArrayList<>();
             ArrayList<String> labels = new ArrayList<>();
+            //LinkedHashSet<String> labels = new LinkedHashSet<>();
+            labels.add("JANUARY");
+            labels.add("FEBRUARY");
+            labels.add("MARCH");
+            labels.add("APRIL");
+            labels.add("MAY");
+            labels.add("JUNE");
+            labels.add("JULY");
+            labels.add("AUGUST");
+            labels.add("SEPTEMBER");
+            labels.add("OCTOBER");
+            labels.add("NOVEMBER");
+            labels.add("DECEMBER");
+
+            for (int j = 0; j< labels.size();j++) {
             for(int i = 0;i<jsonArray.size();i++){
                 float times = jsonArray.get(i).getAsJsonObject().getAsJsonPrimitive("Watch Times").getAsFloat();
                 String month = jsonArray.get(i).getAsJsonObject().getAsJsonPrimitive("Month").getAsString();
-                barEntries.add(new BarEntry(i,times));
-                labels.add(month);
+                if(labels.get(j).equals(month)) {
+                    barEntries.add(new BarEntry(j, times));
+                    //labels.add(month);
+                }else{
+                    barEntries.add(new BarEntry(j, 0f));
+                }
+            }
             }
             BarDataSet barDataSet = new BarDataSet(barEntries, "Watch Times");
             //barDataSet.setStackLabels(labels.toArray(new String[labels.size()]));
@@ -237,7 +259,7 @@ public class ReportsFragment extends Fragment {
 
             barChart.setData(data);
             barChart.getLegend().setEnabled(true);
-            barChart.getDescription().setText("Watch Times Per Month");
+            barChart.getDescription().setText("");//Watch Times Per Month
 
             //barChart.set
             XAxis xAxis = barChart.getXAxis();
@@ -248,6 +270,7 @@ public class ReportsFragment extends Fragment {
             yAxis.setEnabled(false);
             Log.i("label",labels.toString());
             xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+            xAxis.setTextSize(8f);
             xAxis.setDrawAxisLine(false);
             //xAxis.setL
             xAxis.setPosition(XAxis.XAxisPosition.TOP);

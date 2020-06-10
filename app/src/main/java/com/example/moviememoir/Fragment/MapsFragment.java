@@ -165,8 +165,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         protected void onPostExecute(List<String> s) {
         positions = new ArrayList<>();
         for(String address: s){
-            positions.add(getLocationFromAddress(address));
-            Log.i("positions",String.valueOf(getLocationFromAddress(address)[0]));
+            if(getLocationFromAddress(address)!=null) {
+                positions.add(getLocationFromAddress(address));
+                //Log.i("positions",String.valueOf(getLocationFromAddress(address)[0]));
+            }
         }
 //        if(mapFragment==null){
 //            FragmentManager fm = getActivity().getSupportFragmentManager();
