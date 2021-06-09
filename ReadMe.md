@@ -1,3 +1,5 @@
+# Movie Memoir App: full stack
+# Mobile App End:
 
 ## Sign up screen
 ![Signup](https://user-images.githubusercontent.com/48232605/111023733-d2818e00-842e-11eb-905a-fe8594d32310.png)
@@ -42,3 +44,7 @@
 
 ![chart](https://user-images.githubusercontent.com/48232605/111023795-14aacf80-842f-11eb-8489-42aa20953dc8.png)
 ![graph](https://user-images.githubusercontent.com/48232605/111023797-170d2980-842f-11eb-96e9-7afacca008cc.png)
+
+
+# backend:
+![architecture](https://github.com/Stanford-Peng/moviememoir)
