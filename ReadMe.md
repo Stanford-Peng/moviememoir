@@ -46,5 +46,5 @@
 ![graph](https://user-images.githubusercontent.com/48232605/111023797-170d2980-842f-11eb-96e9-7afacca008cc.png)
 
 
-# backend:
-![architecture](https://github.com/Stanford-Peng/moviememoir)
+# Backend:
+![architecture](https://github.com/Stanford-Peng/moviememoir/blob/master/architecture.png)
