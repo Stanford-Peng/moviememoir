@@ -50,6 +50,8 @@
 ![map](https://user-images.githubusercontent.com/48232605/111023800-1aa0b080-842f-11eb-8557-665eb7e75319.png)
 
 # Backend:
+Code can be seen from  [MovieMemoir_3 directory](https://github.com/Stanford-Peng/moviememoir/tree/master/MovieMemoir_3)
+
 These packages are used to create a REST API
 javax.persistence
 javax.ws.rs
