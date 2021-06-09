@@ -50,4 +50,12 @@
 ![map](https://user-images.githubusercontent.com/48232605/111023800-1aa0b080-842f-11eb-8557-665eb7e75319.png)
 
 # Backend:
+These packages are used to create a REST API
+javax.persistence
+javax.ws.rs
+javax.xml.bind.annotation
+javax.ejb.
+
+![ERD](https://github.com/Stanford-Peng/moviememoir/blob/master/ERD.png)
+
 ![architecture](https://github.com/Stanford-Peng/moviememoir/blob/master/architecture.png)
