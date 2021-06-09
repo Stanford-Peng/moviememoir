@@ -45,6 +45,9 @@
 ![chart](https://user-images.githubusercontent.com/48232605/111023795-14aacf80-842f-11eb-8489-42aa20953dc8.png)
 ![graph](https://user-images.githubusercontent.com/48232605/111023797-170d2980-842f-11eb-96e9-7afacca008cc.png)
 
+## Show Cinemas on map:
+
+![map](https://user-images.githubusercontent.com/48232605/111023800-1aa0b080-842f-11eb-8557-665eb7e75319.png)
 
 # Backend:
 ![architecture](https://github.com/Stanford-Peng/moviememoir/blob/master/architecture.png)
